@@ -297,6 +297,44 @@ class AlgoliaQuery {
   }
 
   ///
+  /// **OptionalWords**
+  ///
+  /// A list of words that should be considered as optional when found in the query.
+  ///
+  /// Normally, in order for a record to match it must match all words in the query. By creating a list of optional words, you are *also matching records that match only some of the words*.
+  ///
+  /// This *impacts ranking* as follows:
+  ///   - records that match *all words* are ranked higher
+  ///   - records that match *only some words* are ranked lower
+  ///
+  /// **Usage notes:**
+  ///   - This invariably leads to a larger response.
+  ///   - This is a strategy to improve a response with little or no results.
+  ///   - You don’t need to put commas between words. Each string will automatically be tokenized into words, all of which will be considered as optional.
+  ///   - This parameter is often used in the context of empty or insufficient results. See discussion [here](https://www.algolia.com/doc/guides/managing-results/optimize-search-results/empty-or-insufficient-results/#creating-a-list-of-optional-words). An alternative to optional words is to use [`removeWordsIfNoResults`](https://www.algolia.com/doc/api-reference/api-parameters/removeWordsIfNoResults/). See discussion [here](https://www.algolia.com/doc/guides/managing-results/optimize-search-results/empty-or-insufficient-results/in-depth/why-use-remove-words-if-no-results/#alloptional).
+  ///
+  /// Source: [Learn more](https://www.algolia.com/doc/api-reference/api-parameters/optionalWords/)
+  ///
+  AlgoliaQuery setOptionalWords(dynamic value) {
+    assert(value is String || value is List<String>,
+    'value must be either String | List<String> but was found `${value.runtimeType}`');
+    final List<dynamic> optionalWords =
+    List<dynamic>.from(_parameters['optionalWords']);
+    assert(optionalWords.where((dynamic item) => value == item).isEmpty,
+    'FacetFilters $value already exists in this query');
+    optionalWords.add(value);
+    return _copyWithParameters(<String, dynamic>{'optionalWords': optionalWords});
+  }
+
+  ///
+  /// **Custom Parameters**
+  /// You can use this function to add any missed features and parameters to the request
+  ///
+  AlgoliaQuery setCustomParameter(String key, dynamic value) {
+    return _copyWithParameters(<String, dynamic>{key: value});
+  }
+
+  ///
   /// **NumericFilters**
   ///
   /// Filter on numeric attributes.
