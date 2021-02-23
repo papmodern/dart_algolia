@@ -317,13 +317,14 @@ class AlgoliaQuery {
   ///
   AlgoliaQuery setOptionalWords(dynamic value) {
     assert(value is String || value is List<String>,
-    'value must be either String | List<String> but was found `${value.runtimeType}`');
+        'value must be either String | List<String> but was found `${value.runtimeType}`');
     final List<dynamic> optionalWords =
-    List<dynamic>.from(_parameters['optionalWords']);
+        List<dynamic>.from(_parameters['optionalWords'] ?? []);
     assert(optionalWords.where((dynamic item) => value == item).isEmpty,
-    'FacetFilters $value already exists in this query');
+        'FacetFilters $value already exists in this query');
     optionalWords.add(value);
-    return _copyWithParameters(<String, dynamic>{'optionalWords': optionalWords});
+    return _copyWithParameters(
+        <String, dynamic>{'optionalWords': optionalWords});
   }
 
   ///
@@ -1045,6 +1046,7 @@ class BoundingBox {
     @required this.p2Lat,
     @required this.p2Lng,
   });
+
   num p1Lat;
   num p1Lng;
   num p2Lat;
@@ -1060,6 +1062,7 @@ class BoundingPolygonBox {
     @required this.p3Lat,
     @required this.p3Lng,
   });
+
   num p1Lat;
   num p1Lng;
   num p2Lat;
